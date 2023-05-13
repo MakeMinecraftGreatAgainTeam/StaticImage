@@ -1,0 +1,17 @@
+name: StaticImage
+version: '1.0.0'
+main: cn.wzpmc.staticimage.StaticImage
+api-version: 1.19
+description: A plugin can display image or slow video
+folia-support: true
+prefix: StaticImage
+commands:
+  staticimage:
+    description: "This command can get a static image"
+    usage: "/staticimage <get|help> [name]"
+    aliases: [ si ]
+    permission: staticimage.command
+    permission-message: "You do not have permission to use this command"
+permissions:
+  staticimage.command:
+    default: op

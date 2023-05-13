@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-compileOnly "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT"
 }
 
 def targetJavaVersion = 17
@@ -36,7 +36,9 @@ tasks.withType(JavaCompile).configureEach {
         options.release = targetJavaVersion
     }
 }
-
+tasks.withType(Jar).configureEach {
+    destinationDir = file("$rootDir/run/plugins")      //$rootDir 取项目的顶级目录
+}
 processResources {
     def props = [version: version]
     inputs.properties props

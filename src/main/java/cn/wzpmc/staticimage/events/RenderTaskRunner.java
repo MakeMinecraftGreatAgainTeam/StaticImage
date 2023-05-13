@@ -20,7 +20,7 @@ public class RenderTaskRunner extends BukkitRunnable {
         while (!tasks.isEmpty()){
             RenderTask remove = tasks.remove(0);
             remove.run();
-            if (new Date().getTime() - time >= 50){
+            if (new Date().getTime() - time >= 10){
                 break;
             }
         }

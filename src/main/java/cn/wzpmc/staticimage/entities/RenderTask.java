@@ -1,7 +1,6 @@
 package cn.wzpmc.staticimage.entities;
 
 import cn.wzpmc.staticimage.StaticImage;
-import cn.wzpmc.staticimage.events.LoadChunk;
 import cn.wzpmc.staticimage.renderer.ImageMapRenderer;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -14,7 +13,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.slf4j.Logger;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;

@@ -32,7 +32,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author wzp
@@ -141,6 +143,15 @@ public class StaticImageCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return null;
+        List<String> result = new ArrayList<>();
+        if (args.length <= 1){
+            result.add("help");
+            result.add("get");
+        } else if (args.length == 2){
+            if (args[0].equals("get")){
+                result.addAll(List.of(Objects.requireNonNull(plugin.getDataFolder().list())));
+            }
+        }
+        return result.stream().filter(e -> e.contains(args[args.length - 1])).map(e -> e.replace(".png","").replace(".jpg", "")).toList();
     }
 }

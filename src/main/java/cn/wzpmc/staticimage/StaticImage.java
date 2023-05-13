@@ -11,6 +11,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
+import java.io.File;
+
 public final class StaticImage extends JavaPlugin {
     private Logger logger;
     private static NamespacedKey tagKey;
@@ -36,6 +38,15 @@ public final class StaticImage extends JavaPlugin {
         pluginManager.registerEvents(new PlayerAttackMap(), this);
         renderTaskRunner = new RenderTaskRunner();
         renderTaskRunner.runTaskTimer(this, 0L, 1L);
+        File dataFolder = this.getDataFolder();
+        if (!dataFolder.exists()){
+            boolean mkdir = dataFolder.mkdir();
+            if (!mkdir){
+                logger.error("创建数据文件夹失败！");
+                pluginManager.disablePlugin(this);
+                return;
+            }
+        }
         logger.info("启用StaticImage插件成功！");
     }
 

@@ -2,6 +2,8 @@ package cn.wzpmc.staticimage;
 
 import cn.wzpmc.staticimage.commands.StaticImageCommand;
 import cn.wzpmc.staticimage.events.LoadChunk;
+import cn.wzpmc.staticimage.events.PlayerAttackMap;
+import cn.wzpmc.staticimage.events.RenderTaskRunner;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Server;
 import org.bukkit.command.PluginCommand;
@@ -13,6 +15,7 @@ public final class StaticImage extends JavaPlugin {
     private Logger logger;
     private static NamespacedKey tagKey;
     private static NamespacedKey xywhKey;
+    private RenderTaskRunner renderTaskRunner;
 
     @Override
     public void onEnable() {
@@ -30,6 +33,9 @@ public final class StaticImage extends JavaPlugin {
         Server server = super.getServer();
         PluginManager pluginManager = server.getPluginManager();
         pluginManager.registerEvents(new LoadChunk(), this);
+        pluginManager.registerEvents(new PlayerAttackMap(), this);
+        renderTaskRunner = new RenderTaskRunner();
+        renderTaskRunner.runTaskTimer(this, 0L, 1L);
         logger.info("启用StaticImage插件成功！");
     }
 
@@ -42,5 +48,8 @@ public final class StaticImage extends JavaPlugin {
     }
     public static NamespacedKey getXywhKey(){
         return StaticImage.xywhKey;
+    }
+    public RenderTaskRunner getRenderTaskRunner(){
+        return this.renderTaskRunner;
     }
 }

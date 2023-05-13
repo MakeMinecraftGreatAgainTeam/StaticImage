@@ -1,0 +1,5 @@
+name: StaticImage
+version: '${version}'
+main: cn.wzpmc.staticimage.StaticImage
+api-version: 1.19
+description: A plugin can display image or slow video

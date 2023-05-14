@@ -4,6 +4,7 @@ import cn.wzpmc.staticimage.commands.StaticImageCommand;
 import cn.wzpmc.staticimage.events.LoadChunk;
 import cn.wzpmc.staticimage.events.PlayerAttackMap;
 import cn.wzpmc.staticimage.events.RenderTaskRunner;
+import cn.wzpmc.staticimage.threads.RenderThread;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Server;
 import org.bukkit.command.PluginCommand;
@@ -18,6 +19,7 @@ public final class StaticImage extends JavaPlugin {
     private static NamespacedKey tagKey;
     private static NamespacedKey xywhKey;
     private RenderTaskRunner renderTaskRunner;
+    private RenderThread renderThread;
 
     @Override
     public void onEnable() {
@@ -38,6 +40,8 @@ public final class StaticImage extends JavaPlugin {
         pluginManager.registerEvents(new PlayerAttackMap(), this);
         renderTaskRunner = new RenderTaskRunner();
         renderTaskRunner.runTaskTimer(this, 0L, 1L);
+        renderThread = new RenderThread();
+        renderThread.runTaskTimerAsynchronously(this, 0L, 1L);
         File dataFolder = this.getDataFolder();
         if (!dataFolder.exists()){
             boolean mkdir = dataFolder.mkdir();
@@ -62,5 +66,8 @@ public final class StaticImage extends JavaPlugin {
     }
     public RenderTaskRunner getRenderTaskRunner(){
         return this.renderTaskRunner;
+    }
+    public RenderThread getRenderThread(){
+        return this.renderThread;
     }
 }

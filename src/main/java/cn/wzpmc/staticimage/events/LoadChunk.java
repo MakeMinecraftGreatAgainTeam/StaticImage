@@ -6,7 +6,6 @@ import cn.wzpmc.staticimage.renderer.ImageMapRenderer;
 import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
@@ -15,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
@@ -28,12 +29,10 @@ import java.util.stream.Stream;
  */
 public class LoadChunk implements Listener {
     private final Logger logger;
-    private final Server server;
     private final StaticImage plugin;
     public LoadChunk(){
         this.plugin = JavaPlugin.getPlugin(StaticImage.class);
         logger = this.plugin.getSLF4JLogger();
-        server = this.plugin.getServer();
     }
     @EventHandler
     public void onLoadChunk(PlayerChunkLoadEvent event){
@@ -52,7 +51,12 @@ public class LoadChunk implements Listener {
                                 return false;
                             }
                         }
-                        this.plugin.getRenderTaskRunner().addTask(new RenderTask(frame, this.plugin, world));
+                        PersistentDataContainer persistentDataContainer = item.getItemMeta().getPersistentDataContainer();
+                        if (persistentDataContainer.has(StaticImage.getTagKey())) {
+                            String imageName = persistentDataContainer.get(StaticImage.getTagKey(), PersistentDataType.STRING);
+                            int[] xywh = persistentDataContainer.get(StaticImage.getXywhKey(), PersistentDataType.INTEGER_ARRAY);
+                            this.plugin.getRenderThread().addTask(new RenderTask(frame, this.plugin, world, imageName, xywh));
+                        }
                         return false;
                     }
                     return false;

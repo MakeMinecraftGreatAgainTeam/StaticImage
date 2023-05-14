@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 
 /**
@@ -33,6 +34,25 @@ public class PlayerAttackMap implements Listener {
                     event.setCancelled(true);
                     damager.sendMessage(Component.text("请不要尝试破坏地图画！").color(TextColor.color(170,0,0)));
                 }
+            }
+        }
+    }
+    @EventHandler
+    public void onPlayerUseOnMap(PlayerInteractEntityEvent event){
+        Player player = event.getPlayer();
+        Entity entity = player.getTargetEntity(5);
+        if (entity == null){
+            return;
+        }
+        if (entity.getType().equals(EntityType.ITEM_FRAME)) {
+            ItemFrame frame = (ItemFrame) entity;
+            PersistentDataContainer persistentDataContainer = frame.getItem().getItemMeta().getPersistentDataContainer();
+            if (persistentDataContainer.has(StaticImage.getTagKey())) {
+                if (player.hasPermission("staticimage.bypass")){
+                    return;
+                }
+                event.setCancelled(true);
+                player.sendMessage(Component.text("请不要尝试修改地图画！").color(TextColor.color(170,0,0)));
             }
         }
     }

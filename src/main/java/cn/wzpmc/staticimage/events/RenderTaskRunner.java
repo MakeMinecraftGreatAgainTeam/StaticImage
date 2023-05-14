@@ -1,5 +1,6 @@
 package cn.wzpmc.staticimage.events;
 
+import cn.wzpmc.staticimage.entities.ImagedRenderTask;
 import cn.wzpmc.staticimage.entities.RenderTask;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @since 2023/5/14 0:29:33
  */
 public class RenderTaskRunner extends BukkitRunnable {
-    private static final List<RenderTask> tasks = new ArrayList<>();
+    private final List<ImagedRenderTask> tasks = new ArrayList<>();
     @Override
     public void run() {
         long time = new Date().getTime();
@@ -25,7 +26,7 @@ public class RenderTaskRunner extends BukkitRunnable {
             }
         }
     }
-    public void addTask(RenderTask renderTask){
+    public void addTask(ImagedRenderTask renderTask){
         tasks.add(renderTask);
     }
 }
